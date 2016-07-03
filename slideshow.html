@@ -21,15 +21,46 @@
 
 class: center, middle
 
-# Title
+# Diffusion Weighted Imaging Analysis
 
 ---
 
-# Agenda
+# Outline
 
-1. Introduction
-2. Deep-dive
-3. ...
+1. Background and Sequences
+2. Preprocessing steps
+3. Analysis Tools/Methods
+
+---
+
+# Background 
+
+Diffusion Weighted Imaging sequences are a process where by acquiring many different images with different gradients we can get a measure of the amount of diffusivity across the brain. We can then fit a tensor (diffusion ellipsoid) that sums up all the information from each gradient at each voxel.
+
+---
+
+## Sequences
+
+Varying sequence components for diffusion can consist of:
+* the number of directions
+* whether a reverse phase encoded sequence is run
+* the number of b0 measurements/repeat measurements
+* whether the sequence was multi-shell
+
+---
+
+## Sequence setup
+
+A good heuristic is to acquire opposite phase encoded directions to help correct for eddy currents, distortions. At least 40 directions Should be acquired for b values over 1000. Then time constraints/patient comfort and other factors will determine the number of directions, repeated measures and other factors.
+
+---
+
+## Sources of Noise
+
+Certain things to look out for when acquiring data:
+* Eddy current distortions
+* Movement is particularly impactful
+* Other traditional MR artifact sources also affect quality.
 
 ---
 
@@ -41,6 +72,19 @@ class: center, middle
 </video>]
 
 ---
+
+# Generating Masks
+
+* Use masks from a predefined/default atlas. Fast. Lacks precision.
+* Use masks from a structural analysis of our participants (Freesurfer or similar)
+* Use masks from another group that have scanned regions of interest in higher field strengths, ie 7T
+
+---
+
+# Final Thoughts
+
+1. Normalisation for comparing between subjects
+2. Thresholding for throwing away values with low probability of being on tract.
 
 .center[<img src="resources/tbss_results_filled.png" width="500">]
 
