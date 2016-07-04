@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Title</title>
+    <title>DTI-Presentation</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="presentation.css">
   </head>
@@ -18,7 +18,7 @@ class: center, middle, inverse
 
 ---
 
-# Outline
+## Outline
 
 ### Background and Sequences
 ### Preprocessing steps
@@ -26,47 +26,87 @@ class: center, middle, inverse
 
 ---
 
-.left-column[## Background]
+.left-column[
+  ### Background
+]
 
-.right-column[Diffusion Weighted Imaging sequences are a process where by acquiring many different images with different gradients we can get a measure of the amount of diffusivity across the brain. We can then fit a tensor (diffusion ellipsoid) that sums up all the information from each gradient at each voxel.]
+.right-column[
+  Diffusion Weighted Imaging sequences are a process where by acquiring many different images with different gradients we can get a measure of the amount of diffusivity across the brain. We can then fit a tensor (diffusion ellipsoid) that sums up all the information from each gradient at each voxel.
+]
+
 ---
 
 .left-column[
-  ## Background
-  ## Sequences
-  ]
+  ### Background
+  ### Sequences
+]
 
 .right_column[
-	Varying sequence components for diffusion can consist of:
-	* the number of directions
-	* whether a reverse phase encoded sequence is run
-	* the number of b0 measurements/repeat measurements
-	* whether the sequence was multi-shell
-	]
+  Varying sequence components for diffusion can consist of:
+  * the number of directions
+  * whether a reverse phase encoded sequence is run
+  * the number of b0 measurements/repeat measurements
+  * whether the sequence was multi-shell
+]
 
 ---
 
-## Sequence setup
+.left-column[
+  ### Background
+  ### Sequences
+  ### Sequence setup
+]
 
-A good heuristic is to acquire opposite phase encoded directions to help correct for eddy currents, distortions. At least 40 directions Should be acquired for b values over 1000. Then time constraints/patient comfort and other factors will determine the number of directions, repeated measures and other factors.
+.right-column[
+  A good heuristic is to acquire opposite phase encoded directions to help correct for eddy currents, distortions.
+  
+  At least 40 directions should be acquired for b values over 1000. Then time constraints/patient comfort and other factors will determine the number of directions, repeated measures and other factors.
+
+  A sample sequence might look something like: 1 P&gtA b0 as a separate sequence, and then a second sequence with A&gtP2 sets of b3000 measurements interspersed with b0 measurements.red[*]
+
+  .footnote[.red[*] This would give multiple measures at each gradient direction to help correct for any movement, and an opposite direction to correct for eddy current distortions]
+]
 
 ---
 
-## Sources of Noise
+.left-column[
+  ### Background
+  ### Sequences
+  ### Sequence setup
+  ### Sources of Noise
+]
 
-Certain things to look out for when acquiring data:
-* Eddy current distortions
-* Movement is particularly impactful
-* Other traditional MR artifact sources also affect quality.
+.right-column[
+  Certain things to look out for when acquiring data:
+
+  * Eddy current distortions
+
+  * Movement is particularly impactful
+
+  * Other traditional MR artifact sources also affect quality.
+]
 
 ---
 
+.left-column[
+  ## Pre-processing Steps
+  ### Conversion
+]
+
+.right-column[
+  First 
+]
+
+---
+
+### ProbtrackX tract representation in 3D
 .center[
-<video width="320" height="240" controls>
-	  <source src="resources/animation.mp4" type="video/mp4">
-	  <source src="resources/animation.ogg" type="video/ogg">
-	  Your browser does not support the video tag.
+<video controls>
+    <source src="resources/animation.mp4" type="video/mp4">
+    <source src="resources/animation.ogg" type="video/ogg">
+    Your browser does not support the video tag.
 </video>]
+.footnote[The display threshold has been adjusted to clarify the representation]
 
 ---
 

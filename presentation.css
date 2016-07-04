@@ -36,6 +36,10 @@ code {
   float: left;
   width: 47%;
 }
+video {
+  width=100%
+  height=auto
+}
 .pull-right {
   float: right;
   width: 47%;
