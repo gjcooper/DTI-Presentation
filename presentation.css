@@ -2,6 +2,9 @@
 @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
 @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
 
+/*Colours section */
+.emphatic { color: #D7C5AF; }
+
 body {
   font-family: 'Droid Serif';
 }
@@ -18,18 +21,17 @@ h1, h2, h3 {
   bottom: 3em;
 }
 li p { line-height: 1.25em; }
-.red { color: #fa0000; }
 .large { font-size: 2em; }
 a, a > code {
-  color: rgb(249, 38, 114);
+  color: #DAE6F4;
   text-decoration: none;
 }
 code {
-  background: #e7e8e2;
+  background: #28272D;
   border-radius: 5px;
 }
 .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-.remark-code-line-highlighted     { background-color: #373832; }
+.remark-code-line-highlighted     { background-color: #AF928E; }
 .pull-left {
   float: left;
   width: 47%;
@@ -49,12 +51,12 @@ code {
   padding: 15px;
 }
 .inverse {
-  background: #272822;
-  color: #777872;
-  text-shadow: 0 0 20px #333;
+  background: #1F1E1C;
+  color: #DAE6F4;
+  text-shadow: 0 0 20px #28272D;
 }
 .inverse h1, .inverse h2 {
-  color: #f3f3f3;
+  color: #AF928E;
   line-height: 0.8em;
 }
 
@@ -76,12 +78,12 @@ code {
   padding: 1px 20px;
   height: 90px;
   width: 120px;
-  -moz-box-shadow: 0 0 10px #777;
-  -webkit-box-shadow: 0 0 10px #777;
-  box-shadow: 0 0 10px #777;
+  -moz-box-shadow: 0 0 10px #28272D;
+  -webkit-box-shadow: 0 0 10px #28272D;
+  box-shadow: 0 0 10px #28272D;
 }
 #slide-how .slides .first {
-  background: #fff;
+  background: #1F1E1C;
   position: absolute;
   top: 20%;
   left: 20%;
@@ -89,19 +91,19 @@ code {
 }
 #slide-how .slides .second {
   position: relative;
-  background: #fff;
-  z-index: 0;
+  background: #1F1E1C;
+  z-index
 }
 
 /* Two-column layout */
 .left-column {
-  color: #777;
+  color: #AF928E;
   width: 20%;
   height: 92%;
   float: left;
 }
 .left-column h2:last-of-type, .left-column h3:last-child {
-  color: #000;
+  color: #D7C5AF;
 }
 .right-column {
   width: 75%;
