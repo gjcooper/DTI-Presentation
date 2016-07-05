@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Lato|Merriweather+Sans);
 @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
 /*Colours section */
-.emphatic { color: #D7C5AF; }
+.emphatic { color: #AF928E; }
 body {
   font-family: 'Merriweather Sans';
 }
@@ -19,14 +19,6 @@ h1, h2, h3 {
 }
 li p { line-height: 1.25em; }
 .large { font-size: 2em; }
-a, a > code {
-  color: #DAE6F4;
-  text-decoration: none;
-}
-code {
-  background: #28272D;
-  border-radius: 5px;
-}
 .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
 .remark-code-line-highlighted     { background-color: #AF928E; }
 .pull-left {
