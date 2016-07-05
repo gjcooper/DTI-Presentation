@@ -14,8 +14,9 @@ h1, h2, h3 {
 .remark-slide-content h2 { font-size: 2em; }
 .remark-slide-content h3 { font-size: 1.6em; }
 .footnote {
-  position: absolute;
   bottom: 3em;
+  font-size: 0.8em;
+  font-style: italic;
 }
 li p { line-height: 1.25em; }
 .large { font-size: 2em; }
@@ -42,7 +43,6 @@ li p { line-height: 1.25em; }
 .inverse {
   background: #1F1E1C;
   color: #DAE6F4;
-  text-shadow: 0 0 20px #28272D;
 }
 .inverse h1, .inverse h2 {
   color: #AF928E;
@@ -53,7 +53,14 @@ li p { line-height: 1.25em; }
   color: #AF928E;
   width: 20%;
   height: 92%;
+  padding-right: 1em;
   float: left;
+}
+.left-column h2 {
+  font-size: 1.6em;
+}
+.left-column h3 {
+  font-size: 1.2em;
 }
 .left-column h2:last-of-type, .left-column h3:last-child {
   color: #D7C5AF;
