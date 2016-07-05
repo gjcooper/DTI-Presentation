@@ -1,15 +1,12 @@
-@import url(https://fonts.googleapis.com/css?family=Droid+Serif);
-@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Lato|Merriweather+Sans);
 @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
-
 /*Colours section */
 .emphatic { color: #D7C5AF; }
-
 body {
-  font-family: 'Droid Serif';
+  font-family: 'Merriweather Sans';
 }
 h1, h2, h3 {
-  font-family: 'Yanone Kaffeesatz';
+  font-family: 'Lato';
   font-weight: 400;
   margin-bottom: 0;
 }
@@ -36,10 +33,6 @@ code {
   float: left;
   width: 47%;
 }
-video {
-  width=100%
-  height=auto
-}
 .pull-right {
   float: right;
   width: 47%;
@@ -63,7 +56,6 @@ video {
   color: #AF928E;
   line-height: 0.8em;
 }
-
 /* Slide-specific styling */
 #slide-inverse .footnote {
   bottom: 12px;
@@ -98,7 +90,6 @@ video {
   background: #1F1E1C;
   z-index
 }
-
 /* Two-column layout */
 .left-column {
   color: #AF928E;
