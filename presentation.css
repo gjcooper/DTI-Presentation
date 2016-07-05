@@ -56,40 +56,6 @@ code {
   color: #AF928E;
   line-height: 0.8em;
 }
-/* Slide-specific styling */
-#slide-inverse .footnote {
-  bottom: 12px;
-  left: 20px;
-}
-#slide-how .slides {
-  font-size: 0.9em;
-  position: absolute;
-  top:  151px;
-  right: 140px;
-}
-#slide-how .slides h3 {
-  margin-top: 0.2em;
-}
-#slide-how .slides .first, #slide-how .slides .second {
-  padding: 1px 20px;
-  height: 90px;
-  width: 120px;
-  -moz-box-shadow: 0 0 10px #28272D;
-  -webkit-box-shadow: 0 0 10px #28272D;
-  box-shadow: 0 0 10px #28272D;
-}
-#slide-how .slides .first {
-  background: #1F1E1C;
-  position: absolute;
-  top: 20%;
-  left: 20%;
-  z-index: 1;
-}
-#slide-how .slides .second {
-  position: relative;
-  background: #1F1E1C;
-  z-index
-}
 /* Two-column layout */
 .left-column {
   color: #AF928E;
