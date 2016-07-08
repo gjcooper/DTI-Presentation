@@ -119,6 +119,31 @@ template: centred
 ###A sample FA map, coloured based on the direction of diffusion
 .center[<img src="resources/FA-colour.png" width="500" height="341">]
 ---
+.left-column[
+## Pre-processing
+### - Conversion
+### - Correction
+### - Diffusion Tensor Fitting
+### - Coregistration
+]
+.right-column[
+This involves registering either a b0 image from the diffusion sequence or the mean b0 if multiple b0 were acquired to a structural image (MPRAGE or similar).
+
+Depending upon the later analysis steps this preprocessing step may or may not be necessary, however it is generally advisable as it allows individual diffusion results to be displayed overlayed on a higher resolution image, allowing the viewer to visualise position in the brain for significant features.
+
+The method that FSL uses is to run a linear registration with 6 degrees of freedom.
+
+An additional steps can be to register each participants structural image to a standard brain (a popular choice is the [MNI brain](https://www.mcgill.ca/bic/resources/brain-atlases/human)). This then allows the results from each individual brain to be comapred in a standard space.
+]
+---
+template: centred
+## Analysis techniques with you clean data
+---
+.left-column[
+]
+.right-column[
+]
+---
 template: centred
 ### ProbtrackX tract representation in 3D
 .center[
