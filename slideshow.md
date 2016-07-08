@@ -11,7 +11,7 @@ class: center, middle, inverse
 ---
 layout: true
 name: columns
-class: inverse
+class: inverse, middle
 ---
 .left-column[
 ## Background
@@ -129,7 +129,7 @@ Your browser does not support the video tag.
 </video>
 ]
 
-.footnote[The display threshold has been adjusted to clarify the representation]
+.imlabel[The display threshold has been adjusted to clarify the representation]
 ---
 There are mulitple ways to generate masks used for tractography, including:
 

@@ -15,6 +15,12 @@ h1, h2, h3 {
 .remark-slide-content h3 { font-size: 1.6em; }
 .footnote {
   bottom: 3em;
+  position: absolute;
+  font-size: 0.8em;
+  font-style: italic;
+}
+.imlabel {
+  bottom: 3em;
   font-size: 0.8em;
   font-style: italic;
 }
@@ -41,7 +47,7 @@ li p { line-height: 1.25em; }
   padding: 15px;
 }
 .inverse {
-  background: #1F1E1C;
+  background: #28272D;
   color: #DAE6F4;
 }
 .inverse h1, .inverse h2 {
