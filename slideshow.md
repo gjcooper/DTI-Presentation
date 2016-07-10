@@ -137,11 +137,18 @@ An additional steps can be to register each participants structural image to a s
 ]
 ---
 template: centred
-## Analysis techniques with you clean data
+## Further Analysis
 ---
 .left-column[
+## Analysis
+### - FSL (1)
 ]
 .right-column[
+.center[### BedpostX]
+
+There are two primary streams of analysis that are prominent within the FSL suite of analysis tools for diffusion data. The first of these is probabilistic tractography (`ProbtrackX`) and a pre-requisite for that is `BedpostX`.
+
+`BedpostX
 ]
 ---
 template: centred
