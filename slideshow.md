@@ -148,7 +148,9 @@ template: centred
 
 There are two primary streams of analysis that are prominent within the FSL suite of analysis tools for diffusion data. The first of these is probabilistic tractography (`ProbtrackX`) and a pre-requisite for that is `BedpostX`.
 
-`BedpostX
+`BedpostX` uses bayesian estimation to generate a folder with a large selection of files which are used in the probabilistic tractgraphy. It is able to model crossing fibres using the Markov Chain Monte Carlo sampling to build up distributions at each voxel.
+
+The script expects a data file containing a 4D series of brain volumes (including both with and without diffusion weighting) as well as a brain mask (separating skull and external regions from the brain). Finally it also requires
 ]
 ---
 template: centred
