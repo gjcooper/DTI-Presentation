@@ -150,7 +150,77 @@ There are two primary streams of analysis that are prominent within the FSL suit
 
 `BedpostX` uses bayesian estimation to generate a folder with a large selection of files which are used in the probabilistic tractgraphy. It is able to model crossing fibres using the Markov Chain Monte Carlo sampling to build up distributions at each voxel.
 
-The script expects a data file containing a 4D series of brain volumes (including both with and without diffusion weighting) as well as a brain mask (separating skull and external regions from the brain). Finally it also requires
+The script expects a data file containing a 4D series of brain volumes (including both with and without diffusion weighting) as well as a brain mask (separating skull and external regions from the brain). Finally it also requires a bvecs & bvals file that contain a list of gradient directions and bvalues respectively applied during the acquisition (and in the same order as the data).
+]
+---
+.left-column[
+## Analysis
+### - FSL (1)
+]
+.right-column[
+.centre[### BedpostX continued...]
+
+The output files are 3D and 4D volumes primarily samples and means of the distributions on theta, phi and fractional anisotropy, means of distributions on diffusivity, T2w baseline signal intesity and PDD distribution and finally uncertainty on the estimated fibre orientation.
+
+Advanced option that can be fed into the script include changing the default number of fibres modelled per voxel, adding burnin for the MCMC process and alternative models for multi-shell data and others.
+]
+---
+.left-column[
+## Analysis
+### - FSL (1)
+]
+.right-column[
+.center[### ProbtrackX]
+
+This script runs probabilistic tractography with corssing fibres and takes as input the files created by the `bedpostx` script. The main premise of the script is to generate connectivity distribtuions from user-specified seed voxels, creating a single image in the space of the specified seed.
+
+All brain voxels in the resulting image will have values representing the number of samples that pass through the voxel from the seed region.
+]
+---
+.left-column[
+## Analysis
+### - FSL (1)
+]
+.right-column[
+.centre[### ProbtrackX Seed Regions]
+
+* If the seed region is in a non-diffusion space then transformation matrices (for linear registration) or warpfields (for nonlinear registration) need to be provided.
+
+* Seeds can be specified as a single voxel, a single mask (one contiguous region) or multiple masks (tracts must pass through all supplied masks)
+
+* .emphatic[Targets] can also be specified. The different types are waypoint masks (tracts that pass through either all masks or at least one mask are selected), exclusion masks (pathways that enter an exclusion mask are terminated) and classification masks (which classify seed voxels based on which mask tracts intersect.)
+
+#### Options
+
+There are too many options to discuss fully here, but options include changing the number of samples used, limiting the curvature of pathways, pathway loop checking and many more.
+]
+---
+.left-column[
+## Analysis
+### - FSL (1)
+]
+.right-column[
+.center[### Further steps]
+
+If you have run a classification target `probtrackx` analysis then the FSL diffusion toolkit provides a couple more scripts:
+
+* `proj_thresh`: which converts seeds_to\_{target} values from the total numbers of samples to the proportion of samples reaching any target mask that is over a specified threshold.
+
+* `find_the_biggest`: performs hard segmentation of the seed region based on the outputs of classification targets.
+]
+---
+.left-column[
+## Analysis
+### - FSL (1)
+]
+.right-column[
+.center[### Other utilities]
+
+FSL provides two more utilities that act on 3D/4D images files and are very powerful for extracting numbers out of the resulting files. These also can be very useful with the next analysis stream.
+
+* `fslmaths`: Has a huge array of mathematical operations that can be performed on the data, including, but certaqinly not limited to, thresholding, adding/multiplying/subtracting image, spatial filtering and basic statistical operations.
+
+* `fslstats`: Runs statistics on supplied images, including max/min/mean/standard dev, outputting co-ordinates of max/min voxels, histograms, centres-of-gravity and more.
 ]
 ---
 template: centred
@@ -164,6 +234,16 @@ Your browser does not support the video tag.
 ]
 
 .imlabel[The display threshold has been adjusted to clarify the representation]
+---
+.left-column[
+## Analysis
+### - FSL (1)
+### - FSL (2)
+]
+.right-column[
+.center[### Tract Based Spatial Statistics]
+
+]
 ---
 There are mulitple ways to generate masks used for tractography, including:
 

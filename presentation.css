@@ -50,7 +50,7 @@ footer {
   font-style: italic;
   text-align: center;
 }
-li p { line-height: 1.25em; }
+li p { line-height: 1em; }
 .large { font-size: 2em; }
 .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
 .remark-code-line-highlighted     { background-color: #AF928E; }
