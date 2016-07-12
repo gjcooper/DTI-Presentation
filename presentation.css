@@ -8,6 +8,10 @@
 .icentre {
   text-align: center;
 }
+.margins {
+  width: 75%;
+  margin: auto;
+}
 body {
   font-family: 'Merriweather Sans';
 }
@@ -27,10 +31,24 @@ a:visited { color: #D7C5AF; }
   font-size: 0.8em;
   font-style: italic;
 }
-.imlabel {
-  bottom: 3em;
+img {
+  margin: auto;
+  display: block;
+}
+footer {
+  clear: both;
+  position: relative;
+  height: 3em;
+  margin-top: 3em;
   font-size: 0.8em;
   font-style: italic;
+  text-align: center;
+}
+.imlabel {
+ /* bottom: 3em;*/
+  font-size: 0.8em;
+  font-style: italic;
+  text-align: center;
 }
 li p { line-height: 1.25em; }
 .large { font-size: 2em; }
