@@ -269,6 +269,11 @@ Other options for TBSS analysis are:
 * Warping TBSS results back to native space to use for tractography or validation.
 ]
 ---
+template: centred
+### TBSS results for significant (P<0.5) differences
+.center[<img src="resources/tbss_results_filled.png" width="500" height="335">]
+.imlabel[Group comparison showing regions of increased FA from one group to another]
+---
 There are multiple ways to generate masks used for tractography, including:
 
 * Use masks from a predefined/default atlas. Fast. Lacks precision.
@@ -280,4 +285,3 @@ There are multiple ways to generate masks used for tractography, including:
 # Final Thoughts
 1. Normalisation for comparing between subjects
 2. Thresholding for throwing away values with low probability of being on tract.
-.center[<img src="resources/tbss_results_filled.png" width="500" height="335">]
