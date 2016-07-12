@@ -124,16 +124,16 @@ template: centred
 ### - Conversion
 ### - Correction
 ### - Diffusion Tensor Fitting
-### - Coregistration
+### - Co-registration
 ]
 .right-column[
 This involves registering either a b0 image from the diffusion sequence or the mean b0 if multiple b0 were acquired to a structural image (MPRAGE or similar).
 
-Depending upon the later analysis steps this preprocessing step may or may not be necessary, however it is generally advisable as it allows individual diffusion results to be displayed overlayed on a higher resolution image, allowing the viewer to visualise position in the brain for significant features.
+Depending upon the later analysis steps this pre-processing step may or may not be necessary, however it is generally advisable as it allows individual diffusion results to be displayed overlaid on a higher resolution image, allowing the viewer to visualise position in the brain for significant features.
 
 The method that FSL uses is to run a linear registration with 6 degrees of freedom.
 
-An additional steps can be to register each participants structural image to a standard brain (a popular choice is the [MNI brain](https://www.mcgill.ca/bic/resources/brain-atlases/human)). This then allows the results from each individual brain to be comapred in a standard space.
+An additional steps can be to register each participants structural image to a standard brain (a popular choice is the [MNI brain](https://www.mcgill.ca/bic/resources/brain-atlases/human)). This then allows the results from each individual brain to be compared in a standard space.
 ]
 ---
 template: centred
@@ -148,9 +148,9 @@ template: centred
 
 There are two primary streams of analysis that are prominent within the FSL suite of analysis tools for diffusion data. The first of these is probabilistic tractography (`ProbtrackX`) and a pre-requisite for that is `BedpostX`.
 
-`BedpostX` uses bayesian estimation to generate a folder with a large selection of files which are used in the probabilistic tractgraphy. It is able to model crossing fibres using the Markov Chain Monte Carlo sampling to build up distributions at each voxel.
+`BedpostX` uses Bayesian estimation to generate a folder with a large selection of files which are used in the probabilistic tractography. It is able to model crossing fibres using the Markov Chain Monte Carlo sampling to build up distributions at each voxel.
 
-The script expects a data file containing a 4D series of brain volumes (including both with and without diffusion weighting) as well as a brain mask (separating skull and external regions from the brain). Finally it also requires a bvecs & bvals file that contain a list of gradient directions and bvalues respectively applied during the acquisition (and in the same order as the data).
+The script expects a data file containing a 4D series of brain volumes (including both with and without diffusion weighting) as well as a brain mask (separating skull and external regions from the brain). Finally it also requires a bvecs & bvals file that contain a list of gradient directions and b-values respectively applied during the acquisition (and in the same order as the data).
 ]
 ---
 .left-column[
@@ -160,9 +160,9 @@ The script expects a data file containing a 4D series of brain volumes (includin
 .right-column[
 .centre[### BedpostX continued...]
 
-The output files are 3D and 4D volumes primarily samples and means of the distributions on theta, phi and fractional anisotropy, means of distributions on diffusivity, T2w baseline signal intesity and PDD distribution and finally uncertainty on the estimated fibre orientation.
+The output files are 3D and 4D volumes primarily samples and means of the distributions on theta, phi and fractional anisotropy, means of distributions on diffusivity, T2w baseline signal intensity and PDD distribution and finally uncertainty on the estimated fibre orientation.
 
-Advanced option that can be fed into the script include changing the default number of fibres modelled per voxel, adding burnin for the MCMC process and alternative models for multi-shell data and others.
+Advanced option that can be fed into the script include changing the default number of fibres modelled per voxel, adding burn-in for the MCMC process and alternative models for multi-shell data and others.
 ]
 ---
 .left-column[
@@ -172,7 +172,7 @@ Advanced option that can be fed into the script include changing the default num
 .right-column[
 .center[### ProbtrackX]
 
-This script runs probabilistic tractography with corssing fibres and takes as input the files created by the `bedpostx` script. The main premise of the script is to generate connectivity distribtuions from user-specified seed voxels, creating a single image in the space of the specified seed.
+This script runs probabilistic tractography with crossing fibres and takes as input the files created by the `bedpostx` script. The main premise of the script is to generate connectivity distributions from user-specified seed voxels, creating a single image in the space of the specified seed.
 
 All brain voxels in the resulting image will have values representing the number of samples that pass through the voxel from the seed region.
 ]
@@ -184,7 +184,7 @@ All brain voxels in the resulting image will have values representing the number
 .right-column[
 .centre[### ProbtrackX Seed Regions]
 
-* If the seed region is in a non-diffusion space then transformation matrices (for linear registration) or warpfields (for nonlinear registration) need to be provided.
+* If the seed region is in a non-diffusion space then transformation matrices (for linear registration) or warp-fields (for non-linear registration) need to be provided.
 
 * Seeds can be specified as a single voxel, a single mask (one contiguous region) or multiple masks (tracts must pass through all supplied masks)
 
@@ -218,9 +218,9 @@ If you have run a classification target `probtrackx` analysis then the FSL diffu
 
 FSL provides two more utilities that act on 3D/4D images files and are very powerful for extracting numbers out of the resulting files. These also can be very useful with the next analysis stream.
 
-* `fslmaths`: Has a huge array of mathematical operations that can be performed on the data, including, but certaqinly not limited to, thresholding, adding/multiplying/subtracting image, spatial filtering and basic statistical operations.
+* `fslmaths`: Has a huge array of mathematical operations that can be performed on the data, including, but certainly not limited to, thresholding, adding/multiplying/subtracting image, spatial filtering and basic statistical operations.
 
-* `fslstats`: Runs statistics on supplied images, including max/min/mean/standard dev, outputting co-ordinates of max/min voxels, histograms, centres-of-gravity and more.
+* `fslstats`: Runs statistics on supplied images, including max/min/mean/standard deviation, outputting co-ordinates of max/min voxels, histograms, centres-of-gravity and more.
 ]
 ---
 template: centred
@@ -243,15 +243,39 @@ Your browser does not support the video tag.
 .right-column[
 .center[### Tract Based Spatial Statistics]
 
+TBSS is an alternative to traditional voxel-wise statistical analysis of fractional anisotropy (FA) images. It aims to solve the issues of arbitrariness of spatial smoothing extent, and choice of standard registration algorithms. The steps in the analysis are:
+
+The process takes FA images (from our `dtifit` step), erodes the data slightly to remove outliers and registers each image to a standard space (FMRIB58_FA, a user supplied target or the most representative from the set).
+
+After registration each individuals FA has the transform applied, and they are combined to create a mean FA image. This is run through a skeletonisation step which creates an alignment-invariant tract representation. Finally TBSS thresholds the mean FA skeleton image and computes a projection from each individuals data onto the skeleton. This is then fed into voxel-wise statistics in the next section.
 ]
 ---
-There are mulitple ways to generate masks used for tractography, including:
+.left-column[
+## Analysis
+### - FSL (1)
+### - FSL (2)
+]
+.right-column[
+.center[### Voxel-wise Statistics and more]
+
+TBSS results can be fed into the FSL `randomise` tool. This runs non-parametric permutation inference on the neuroimaging data, generally by applying a general linear model design matrix. Some examples are one-sample T-tests, two-sample Unpaired T-test with nuisance variables and repeated measures ANOVA. It generally outputs raw test statistics, uncorrected P statistics and family-wise error rate corrected P-values.
+
+Other options for TBSS analysis are:
+
+* Feeding non-FA images in TBSS (for instance mean diffusivity)
+
+* Using crossing-fibre measures (for instance from the `bedpostx` tool)
+
+* Warping TBSS results back to native space to use for tractography or validation.
+]
+---
+There are multiple ways to generate masks used for tractography, including:
 
 * Use masks from a predefined/default atlas. Fast. Lacks precision.
 
 * Use masks from a structural analysis of our participants (Freesurfer or similar)
 
-* Use masks from another group that have scanned regions of interest in higher field strengths, ie 7T
+* Use masks from another group that have scanned regions of interest in higher field strengths, e.g. 7T
 ---
 # Final Thoughts
 1. Normalisation for comparing between subjects
