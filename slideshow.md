@@ -274,14 +274,78 @@ template: centred
 .center[<img src="resources/tbss_results_filled.png" width="500" height="335">]
 .imlabel[Group comparison showing regions of increased FA from one group to another]
 ---
+.left-column[
+## Analysis
+### - FSL (1)
+### - FSL (2)
+### - MRtrix
+]
+.right-column[
+There are two currently two main streams of the `mrtrix` software. One available from the Neurodebian (A Debian based package repository for Neuroimaging software). I am reasonably familiar with how this works and most of the discussion below will refer to this as `mrtrix`. There is also a new version `MRtrix3` that has been significantly reworked and is approaching an official release.
+
+The mrtrix process was a number of smaller tools that did one job each. These tools could then be joined together by running them one after the other or _piping_ the output from one to the input of the next. A typical process for diffusion analysis using `mrtrix` follows on the next page.
+
+`MRtrix3` offers many new workflows and supporting features for the analysis of diffusion data. Some supported capabilities include Anatomically-Constrained Tractography, Multi-tissue Constrained Spherical Deconvolution and Fixel-Based Analysis.
+]
+---
+.left-column[
+## Analysis
+### - FSL (1)
+### - FSL (2)
+### - MRtrix
+]
+.right-column[
+.center[### Steps in `mrtrix` analysis]
+1. Create a brain mask
+2. Create in order *tensor components*, a *fractional anisotropy (FA) map* and an *eigenvector (EV) map* to create the diffusion tensor model.
+3. Estimate the response function (spherical harmonic) coefficients from single-fibre voxels and feed into the *constrained spherical deconvolution computation (CSD)* script
+4. Similar masks to FSL can be used for fibre tracking, including *seed* masks, *include* masks, *exclude* masks and constraint masks (tracks terminated but not _discarded_ when they leave the ROI.
+5. Tractography can be done using the diffusion tensor model or the CSD model. With the CSD model both deterministic and probabilistic tracking can be done.
+6. Whole brain tracking can be done by specifying the brain mask as both the seed and mask regions. Given enough generated tracts (1 million +) you can then use these images to create high-resolution track-density images.
+]
+---
+template: centred
+### Track-density image
+.center[<img src="resources/TDI.png" width="471" height="410">]
+.imlabel[Shows the proportion of generated tracks entering each voxel]
+---
+.left-column[
+## Analysis
+### - FSL (1)
+### - FSL (2)
+### - MRtrix
+### - Others
+]
+.right-column[
+There are many other options for analysis of diffusion data, with many different strengths and weaknesses of each package. (The next screen shows a compiled list of such packages.
+
+Rather than commit to transferring data manually between packages, or staying within one package when it would not be optimal, several groups have developed workflow software that provides links to many of the individual data analysis tools, providing a consistent interface to the tools, as well as doing the heavy lifting in transferring data formats between systems.
+
+One such project is `Nipype`, a python environment that provides easy interaction with tools from many different software packages. Workflows are written and saved in a python script which allows easy reproducibility. It links with parallel computing software to share the load on many machines for large datasets and more.
+]
+---
+template: centred
+### DTI software options
+.center[<img src="resources/software.jpg" width=650, height=366>]
+.imlabel[Taken from: “A hitchhiker's guide to diffusion tensor imaging” http://journal.frontiersin.org/Journal/10.3389/fnins.2013.00031/full]
+---
+template: centred
+## General Observations/Final Discussion
+
+### Masks
+
 There are multiple ways to generate masks used for tractography, including:
 
 * Use masks from a predefined/default atlas. Fast. Lacks precision.
 
 * Use masks from a structural analysis of our participants (Freesurfer or similar)
 
-* Use masks from another group that have scanned regions of interest in higher field strengths, e.g. 7T
+* Use masks from another group that have scanned regions of interest in higher field strengths, e.g. 7T. This higher resolution allows greater delineation of the boundaries between regions of interest.
 ---
-# Final Thoughts
-1. Normalisation for comparing between subjects
-2. Thresholding for throwing away values with low probability of being on tract.
+template: centred
+## General Observations/Final Discussion
+
+### Final Thoughts
+
+* Normalisation for comparing track data between subjects can be achieved by dividing the data by the total number of samples sent out or the waytotal.
+* Thresholding the track data is for throwing away values with low probability of being on the tract and is a lot more subjective. The most important consideration here is to be consistent
