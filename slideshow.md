@@ -8,6 +8,9 @@ class: center, middle, inverse
 ### Background and Sequences
 ### Pre-processing steps
 ### Analysis Tools/Methods
+### Final Thoughts
+---
+## Getting the data
 ---
 layout: true
 name: columns
@@ -17,7 +20,11 @@ class: inverse, middle
 ## Background
 ]
 .right-column[
-Diffusion Weighted Imaging sequences are a process where by acquiring many different images with different gradients we can get a measure of the amount of diffusivity across the brain. We can then fit a tensor (diffusion ellipsoid) that sums up all the information from each gradient at each voxel.
+Diffusion Weighted Imaging is a method of acquiring images to get a measure of the amount of diffusivity across the brain. For each voxel, the intensity of the signal reflects an estimate of the water diffusion at that location.
+
+Diffusion Tensor Imaging works by combining many such images taken with different gradient directions. We can then fit a tensor (diffusion ellipsoid) that sums up all the information from each gradient at each voxel building up information about the direction of diffusion.
+
+Areas in the brain, such as white matter, where water diffuses more rapidly in the direction aligned with the internal structure and more slowly when perpendicular to the structure show up as having large directionality in the computed measures, and can be used to infer white-matter connectivity.
 ]
 ---
 .left-column[
@@ -31,7 +38,7 @@ Varying sequence components for diffusion can consist of:
 
 * whether a reverse phase encoded sequence is run
 
-* the number of b0 measurements/repeat measurements
+* the number of B0 measurements/repeat measurements
 
 * whether the sequence was multi-shell
 ]
@@ -48,13 +55,12 @@ At least 40 directions should be acquired for b-values over 1000. Then time cons
 
 A sample set of measurements might look something like:
 
-* 1 P>A b0 as a separate sequence
+* 1 P>A B0 as a separate sequence
 
-* A second sequence with A>P, 2 sets of 64 b3000 measurements interspersed with b0 measurements.emphatic[*]
+* A second sequence with A>P, 2 sets of 64 b3000 measurements interspersed with B0 measurements..noted[*]
 
 .footnote[
-.emphatic[*]
-This would give multiple measures at each gradient direction to help correct for any movement, and an opposite direction to correct for eddy current distortions
+.noted[*]This would give multiple measures at each gradient direction to help correct for any movement, and an opposite direction to correct for susceptibility induced distortions.
 ]
 ]
 ---
@@ -69,9 +75,11 @@ Certain things to look out for when acquiring data:
 
 * Eddy current distortions
 
+* Susceptibility Induced distortions (geometric distortion caused by B0 inhomogeneity)
+
 * Movement can have a particularly large impact
 
-* Other traditional MR artifact sources also affect quality.
+* Other traditional MR artefact sources also affect quality.
 ]
 ---
 template: centred
@@ -88,6 +96,8 @@ First step after receiving the DICOM files from the scanner is to convert them t
 There are many conversion tools out there. A lot of analysis packages contain a conversion tool, or you can use a standalone tool.
 
 The most widely used format, particularly for open source or freely available software is the nifti file format. The freely available `dcm2niix` package is one popular choice for conversion.
+
+An important caveat here is to check with all software within your analysis pipeline for possible inconsistencies between not only what file format they support, but any differences in how they handle files (rotation of raw data and associated vector files for example)
 ]
 ---
 .left-column[
@@ -112,7 +122,9 @@ With FSL current versions recommend a combination of the `eddy` and `topup` tool
 .right-column[
 This is another steps that most of the analysis packages have an implementation of. It is this step that generates Fractional Anisotropy maps, Mean Diffusivity maps and more.
 
-FSL has a processing step called `dtifit` that takes the eddy current corrected data, a whole brain mask, usually generated with it's brain extraction tool `bet` which strips the skull and external data from a b0 image, and then outputs a range of files, including those mentioned above.
+FSL has a processing step called `dtifit` that takes the eddy current corrected data, a whole brain mask, usually generated with it's brain extraction tool `bet` which strips the skull and external data from a B0 image, and then outputs a range of files, including those mentioned above.
+
+`mrtrix` has the `dwi2tensor`, `tensor2FA` and `tensor2vector` tools.
 ]
 ---
 template: centred
@@ -127,17 +139,17 @@ template: centred
 ### - Co-registration
 ]
 .right-column[
-This involves registering either a b0 image from the diffusion sequence or the mean b0 if multiple b0 were acquired to a structural image (MPRAGE or similar).
+This involves registering either a B0 image from the diffusion sequence or the mean B0 if multiple B0 were acquired to a structural image (MPRAGE or similar).
 
 Depending upon the later analysis steps this pre-processing step may or may not be necessary, however it is generally advisable as it allows individual diffusion results to be displayed overlaid on a higher resolution image, allowing the viewer to visualise position in the brain for significant features.
 
 The method that FSL uses is to run a linear registration with 6 degrees of freedom.
 
-An additional steps can be to register each participants structural image to a standard brain (a popular choice is the [MNI brain](https://www.mcgill.ca/bic/resources/brain-atlases/human)). This then allows the results from each individual brain to be compared in a standard space.
+An additional step can be to register each participants structural image to a standard brain (a popular choice is the [MNI brain](https://www.mcgill.ca/bic/resources/brain-atlases/human)). This then allows the results from each individual brain to be compared in a standard space.
 ]
 ---
 template: centred
-## Further Analysis
+## Finalising the analysis
 ---
 .left-column[
 ## Analysis
@@ -150,7 +162,7 @@ There are two primary streams of analysis that are prominent within the FSL suit
 
 `BedpostX` uses Bayesian estimation to generate a folder with a large selection of files which are used in the probabilistic tractography. It is able to model crossing fibres using the Markov Chain Monte Carlo sampling to build up distributions at each voxel.
 
-The script expects a data file containing a 4D series of brain volumes (including both with and without diffusion weighting) as well as a brain mask (separating skull and external regions from the brain). Finally it also requires a bvecs & bvals file that contain a list of gradient directions and b-values respectively applied during the acquisition (and in the same order as the data).
+The script expects a data file containing a 4D series of brain volumes (with and without diffusion weighting) as well as a brain mask (separating skull and external regions from the brain). Finally it also requires a bvecs & bvals file that contain a list of gradient directions and b-values respectively applied during the acquisition (and in the same order as the data).
 ]
 ---
 .left-column[
@@ -160,9 +172,23 @@ The script expects a data file containing a 4D series of brain volumes (includin
 .right-column[
 .centre[### BedpostX continued...]
 
-The output files are 3D and 4D volumes primarily samples and means of the distributions on theta, phi and fractional anisotropy, means of distributions on diffusivity, T2w baseline signal intensity and PDD distribution and finally uncertainty on the estimated fibre orientation.
+The output files are 3D and 4D volumes, primarily:
 
-Advanced option that can be fed into the script include changing the default number of fibres modelled per voxel, adding burn-in for the MCMC process and alternative models for multi-shell data and others.
+* samples and means of the distributions on theta, phi.noted[*] and fractional anisotropy
+
+* means of distributions on diffusivity
+
+* T2w baseline signal intensity
+
+* Principle Diffusion Direction (PDD) distribution
+
+* and finally uncertainty on the estimated fibre orientation.
+
+Advanced options that can be fed into the script include changing the default number of fibres modelled per voxel, adding burn-in for the MCMC process and alternative models for multi-shell data and others.
+
+.footnote[
+.noted[*] theta and phi together represent the principle diffusion direction in spherical polar co-ordinates
+]
 ]
 ---
 .left-column[
@@ -202,9 +228,9 @@ There are too many options to discuss fully here, but options include changing t
 .right-column[
 .center[### Further steps]
 
-If you have run a classification target `probtrackx` analysis then the FSL diffusion toolkit provides a couple more scripts:
+If you have run a classification target `probtrackx` analysis (which creates a seed\_to\_{target} file for each target mask used) then the FSL diffusion toolkit provides a couple more scripts:
 
-* `proj_thresh`: which converts seeds_to\_{target} values from the total numbers of samples to the proportion of samples reaching any target mask that is over a specified threshold.
+* `proj_thresh`: which converts seeds\_to\_{target} values from the total numbers of samples to the proportion of samples reaching any target mask that is over a specified threshold.
 
 * `find_the_biggest`: performs hard segmentation of the seed region based on the outputs of classification targets.
 ]
@@ -218,7 +244,7 @@ If you have run a classification target `probtrackx` analysis then the FSL diffu
 
 FSL provides two more utilities that act on 3D/4D images files and are very powerful for extracting numbers out of the resulting files. These also can be very useful with the next analysis stream.
 
-* `fslmaths`: Has a huge array of mathematical operations that can be performed on the data, including, but certainly not limited to, thresholding, adding/multiplying/subtracting image, spatial filtering and basic statistical operations.
+* `fslmaths`: Has a huge array of mathematical operations that can be performed on the data, including, but certainly not limited to, thresholding, adding/multiplying/subtracting images, spatial filtering and basic statistical operations.
 
 * `fslstats`: Runs statistics on supplied images, including max/min/mean/standard deviation, outputting co-ordinates of max/min voxels, histograms, centres-of-gravity and more.
 ]
@@ -270,9 +296,9 @@ Other options for TBSS analysis are:
 ]
 ---
 template: centred
-### TBSS results for significant (P<0.5) differences
+### TBSS results for significant (P<0.05) differences
 .center[<img src="resources/tbss_results_filled.png" width="500" height="335">]
-.imlabel[Group comparison showing regions of increased FA from one group to another]
+.imlabel[Group comparison showing regions of increased FA (red-yellow) from one group to another overlaid on the blue skeleton]
 ---
 .left-column[
 ## Analysis
@@ -281,7 +307,7 @@ template: centred
 ### - MRtrix
 ]
 .right-column[
-There are two currently two main streams of the `mrtrix` software. One available from the Neurodebian (A Debian based package repository for Neuroimaging software). I am reasonably familiar with how this works and most of the discussion below will refer to this as `mrtrix`. There is also a new version `MRtrix3` that has been significantly reworked and is approaching an official release.
+There are two currently two main streams of the `mrtrix` software. One available from Neurodebian (A Debian based package repository for Neuroimaging software). I am reasonably familiar with how this works and most of the discussion below will refer to this as `mrtrix`. There is also a new version `MRtrix3` that has been significantly reworked and is approaching an official release.
 
 The mrtrix process was a number of smaller tools that did one job each. These tools could then be joined together by running them one after the other or _piping_ the output from one to the input of the next. A typical process for diffusion analysis using `mrtrix` follows on the next page.
 
@@ -297,10 +323,15 @@ The mrtrix process was a number of smaller tools that did one job each. These to
 .right-column[
 .center[### Steps in `mrtrix` analysis]
 1. Create a brain mask
+
 2. Create in order *tensor components*, a *fractional anisotropy (FA) map* and an *eigenvector (EV) map* to create the diffusion tensor model.
+
 3. Estimate the response function (spherical harmonic) coefficients from single-fibre voxels and feed into the *constrained spherical deconvolution computation (CSD)* script
-4. Similar masks to FSL can be used for fibre tracking, including *seed* masks, *include* masks, *exclude* masks and constraint masks (tracks terminated but not _discarded_ when they leave the ROI.
+
+4. Similar masks to FSL can be used for fibre tracking, including *seed* masks, *include* masks, *exclude* masks and constraint masks (tracks terminated but not _discarded_ when they leave the ROI.)
+
 5. Tractography can be done using the diffusion tensor model or the CSD model. With the CSD model both deterministic and probabilistic tracking can be done.
+
 6. Whole brain tracking can be done by specifying the brain mask as both the seed and mask regions. Given enough generated tracts (1 million +) you can then use these images to create high-resolution track-density images.
 ]
 ---
@@ -317,16 +348,16 @@ template: centred
 ### - Others
 ]
 .right-column[
-There are many other options for analysis of diffusion data, with many different strengths and weaknesses of each package. (The next screen shows a compiled list of such packages.
+There are many other options for analysis of diffusion data, with many different strengths and weaknesses of each package. (The next screen shows a compiled list of such packages.)
 
 Rather than commit to transferring data manually between packages, or staying within one package when it would not be optimal, several groups have developed workflow software that provides links to many of the individual data analysis tools, providing a consistent interface to the tools, as well as doing the heavy lifting in transferring data formats between systems.
 
-One such project is `Nipype`, a python environment that provides easy interaction with tools from many different software packages. Workflows are written and saved in a python script which allows easy reproducibility. It links with parallel computing software to share the load on many machines for large datasets and more.
+One such project is `Nipype`, a python environment that provides easy interaction with tools from many different software packages. Workflows are written and saved in a python script which allows easy reproducibility. It also links with parallel computing software to share the load on many machines for large datasets and more.
 ]
 ---
 template: centred
 ### DTI software options
-.center[<img src="resources/software.jpg" width=650, height=366>]
+.center[<img src="resources/software.png" width=650, height=366>]
 .imlabel[Taken from: “A hitchhiker's guide to diffusion tensor imaging” http://journal.frontiersin.org/Journal/10.3389/fnins.2013.00031/full]
 ---
 template: centred
@@ -334,18 +365,22 @@ template: centred
 
 ### Masks
 
+.uncentre[
 There are multiple ways to generate masks used for tractography, including:
 
 * Use masks from a predefined/default atlas. Fast. Lacks precision.
 
-* Use masks from a structural analysis of our participants (Freesurfer or similar)
+* Use masks from a structural analysis of the participants (Hand-drawn, automated or a combination of the two). Depending on the level of user involvement this can be a very time-consuming process, but does have good precision for the particular subjects.
 
-* Use masks from another group that have scanned regions of interest in higher field strengths, e.g. 7T. This higher resolution allows greater delineation of the boundaries between regions of interest.
+* Use masks from another group that have scanned regions of interest in higher field strengths, e.g. 7T. This higher resolution allows greater delineation of the boundaries between regions of interest. (Assuming the local dataset was acquired on a lower resolution system, like 3T)
+]
 ---
 template: centred
 ## General Observations/Final Discussion
 
 ### Final Thoughts
 
+.uncentre[
 * Normalisation for comparing track data between subjects can be achieved by dividing the data by the total number of samples sent out or the waytotal.
 * Thresholding the track data is for throwing away values with low probability of being on the tract and is a lot more subjective. The most important consideration here is to be consistent
+]

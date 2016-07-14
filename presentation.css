@@ -5,13 +5,20 @@
   font-style: oblique;
   font-weight: bold; 
 }
+.noted {
+  color: #AF928E;
+}
 .icentre {
   text-align: center;
+}
+.uncentre {
+  text-align: left;
 }
 .margins {
   width: 75%;
   margin: auto;
 }
+.
 body {
   font-family: 'Merriweather Sans';
 }
@@ -78,7 +85,7 @@ li p { line-height: 1em; }
 }
 .inverse h1, .inverse h2 {
   color: #AF928E;
-  line-height: 0.8em;
+  line-height: 1em;
 }
 /* Two-column layout */
 .left-column {
@@ -87,6 +94,7 @@ li p { line-height: 1em; }
   height: 92%;
   padding-right: 1em;
   float: left;
+  font-size: 0.8em;
 }
 .left-column h2 {
   font-size: 1.6em;
@@ -100,5 +108,6 @@ li p { line-height: 1em; }
 .right-column {
   width: 75%;
   float: right;
-  padding-top: 1em;
+  height: 92%;
+  padding-top: 0.5em;
 }
